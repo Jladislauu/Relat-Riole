@@ -1,0 +1,24 @@
+<!-- CONEXÃO SSH PROD -->
+
+Host aws-ec2
+    HostName ec2-54-236-85-219.compute-1.amazonaws.com
+    User Ubuntu
+    IdentityFile C:\Users\joao.ladislau\Documents\glpi-server.pem
+
+
+<!-- CONEXÃO SSH DEV -->
+
+Host aws-ec2
+    HostName ec2-44-223-191-161.compute-1.amazonaws.com
+    User ubuntu
+    IdentityFile C:\Users\joao.ladislau\Documents\dev-glpi-server.pem
+
+
+<!-- ACESSO DB -->
+
+USERNAME: glpi	
+PASSWORD: Riole001
+
+
+<!-- TUNEL SSH -->
+ssh -i "C:\Users\joao.ladislau\Documents\glpi-server.pem" -L 3306:localhost:3306 ubuntu@ec2-54-236-85-219.compute-1.amazonaws.com

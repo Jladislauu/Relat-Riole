@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/css/result.css">
+    <title>Relatório Técnico Chamado: #{{ ticket_data.ticket_id }}</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="resultado">
+        <!-- Cabeçalho -->
+        <div class="cabeçalho">
+            <img class="img1" src="/static/Timbrado-01.png" alt="Logo">
+            <div class="titulo">
+                <h1>Relatório Técnico Chamado: #{{ ticket_data.ticket_id }}</h1>
+                {% if ticket_data.titulo_chamado %}
+                    <h2 class="tituloh2">Titulo: {{ ticket_data.titulo_chamado }}</h2>
+                {% endif %}
+            </div>
+            <div class="data-emissao">
+                <p><strong>Emissão:</strong><br>
+                    {{ ticket_data.data_emissao.split(' - ')[0] }}<br> <!-- Exibe a data -->
+                    {{ ticket_data.data_emissao.split(' - ')[1] }} <!-- Exibe a hora -->
+                </p>
+            </div>
+        </div>
+
+        <!-- Colunas de Dados -->
+        <div class="dados">
+            <div class="column">
+                <h2>Dados do Chamado</h2>
+                <p><strong>ID do Chamado:</strong> {{ ticket_data.ticket_id }}</p>
+                {% if ticket_data.agendar_suporte %}<p><strong>Agendado:</strong> {{ ticket_data.agendar_suporte }}</p>{% endif %}
+                {% if ticket_data.ticket_creation_date %}<p><strong>Data de Criação:</strong> {{ ticket_data.ticket_creation_date }}</p>{% endif %}
+                {% if ticket_data.ticket_request_type_name %}<p><strong>Origem:</strong> {{ ticket_data.ticket_request_type_name }}</p>{% endif %}
+                <!-- <p><strong>Origem: </strong> Whatsapp </p> -->
+                {% if ticket_data.ticket_last_updater_name %}<p><strong>Técnico responsável:</strong> {{ ticket_data.ticket_last_updater_name }}</p>{% endif %}
+            </div>
+
+            <div class="column">
+                <h2>Dados do Solicitante</h2>
+                {% if ticket_data.cliente_nome %}<p><strong>Cliente:</strong> {{ ticket_data.cliente_nome }}</p>{% endif %}
+                {% if ticket_data.requerente_nome %}<p><strong>Requerente:</strong> {{ ticket_data.requerente_nome }}</p>{% endif %}
+                {% if ticket_data.solicitante_setor %}<p><strong>Setor:</strong> {{ ticket_data.solicitante_setor }}</p>{% endif %}
+                {% if ticket_data.solicitante_cargo %}<p><strong>Cargo:</strong> {{ ticket_data.solicitante_cargo }}</p>{% endif %}
+                {% if ticket_data.solicitante_email %}<p><strong>Email:</strong> {{ ticket_data.solicitante_email }}</p>{% endif %}
+                {% if ticket_data.solicitante_celular %}<p><strong>Celular:</strong> {{ ticket_data.solicitante_celular }}</p>{% endif %}
+            </div>
+        </div>
+
+        {% if ticket_data.descricao_solicitante %}
+            <div class="descricao_solicitante">
+                <p><strong>Descrição do Solicitante:</strong> {{ ticket_data.descricao_solicitante }}</p>
+            </div>
+        {% endif %}
+
+        <div class="descricao_tecnica">
+            {% if ticket_data['Descrição do Técnico'] %}
+                <p><strong>Descrição do Técnico:</strong> {{ ticket_data['Descrição do Técnico'] }}</p>
+            {% endif %}
+            {% if ticket_data['Ação Realizada'] %}
+                <p><strong>Ação Realizada:</strong> {{ ticket_data['Ação Realizada'] }}</p>
+            {% endif %}
+            {% if ticket_data['Solução'] %}
+                <p><strong>Solução:</strong> {{ ticket_data['Solução'] }}</p>
+            {% endif %}
+        </div>
+
+        <!-- Área para Assinaturas -->
+        <div class="signature">
+            <div>
+                <div class="signature-line"></div>
+                <strong>Assinatura do Técnico:</strong>
+            </div>
+            <div>
+                <div class="signature-line"></div>
+                <strong>Assinatura do Requerente:</strong>
+            </div>
+        </div>
+    </div>
+    <div class="page-number"></div>
+</div>
+
+<button id="generatePDF">Salvar PDF</button>
+
+<script>
+    document.getElementById('generatePDF').addEventListener('click', function() {
+        const element = document.querySelector('.resultado');  // Seleciona a div com o conteúdo a ser convertido em PDF
+        const ticketId = "{{ ticket_data.ticket_id }}";  // Pega o ID do chamado
+        const opt = {
+            margin:       0.5,
+            filename:     'Relatório Suporte ID(' + ticketId + ').pdf',  // Nome do arquivo dinâmico com o ID do chamado
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().from(element).set(opt).save();
+    });
+</script>
+</body>
+</html>

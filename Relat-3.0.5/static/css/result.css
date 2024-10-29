@@ -1,0 +1,215 @@
+@page {
+  size: A4;
+  margin: 15mm;
+  @bottom-right {
+    content: "Página " counter(page) " de " counter(pages);
+    font-size: 12px;
+    color: #333;
+  }
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  line-height: 1.6;
+}
+
+h1, h2 {
+  text-align: center;
+  color: #333;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header, .footer {
+  text-align: center;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+.header {
+  font-weight: bold;
+}
+
+.resultado {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+.dados {
+  border-radius: 8px;
+  border: 2px solid #333;
+  white-space: nowrap; 
+  background-color: #f5f5f5;
+  margin: 0.5% 0;
+}
+
+.dados .h2 {
+  text-align: left;
+}
+
+.column {
+  display: inline-block;
+  width: 48%;
+  vertical-align: top;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.column:last-child {
+  margin-left: 4%;
+}
+
+.column p {
+  margin: 5px 0; /* Ajuste a margem vertical */
+  line-height: 1.2; /* Reduz a altura da linha */
+}
+
+.descricao_solicitante, .descricao_tecnica {
+  border-radius: 8px;
+  border: 2px solid #333;
+  background-color: #f5f5f5;
+  padding: 1%;
+  margin: 0.5% 0;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  display: inline-block;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.img1 {
+  width: 100px;
+}
+
+.signature {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.signature div {
+  justify-content: center;
+  text-align: center;
+  width: 95%;
+}
+
+.signature-line {
+  border-top: 1px solid black;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.cabeçalho {
+  display: grid;
+  grid-template-columns: 0fr 2fr 0fr; /* Dividindo em três colunas: logo, título, e data */
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #333;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+  white-space: nowrap; 
+}
+
+.cabeçalho img {
+  width: 100px;
+  border-right: 2px solid #333; /* Linha separando a logo */
+  padding-right: 10px;
+}
+
+.cabeçalho .titulo {
+  text-align: center;
+  padding: 0 10px;
+  border-right: 2px solid #333; /* Linha separando o título */
+}
+
+.tituloh2 {
+  white-space: normal;   /* Permite quebra de linha */
+  max-width: 100%;       /* Mantém o título dentro da largura do contêiner */
+}
+
+.cabeçalho h1, .cabeçalho h2 {
+  margin: 0;
+}
+
+.cabeçalho .data-emissao {
+  text-align: center;
+  font-size: 14px;
+  padding-left: 10px;
+}
+
+/* Garantir que certos elementos não sejam cortados entre páginas */
+.column, .descricao_solicitante, .descricao_tecnica, .signature, .cabeçalho {
+  page-break-inside: avoid;
+}
+
+.signature {
+  page-break-before: auto; /* Ajusta a quebra de página antes da assinatura, se necessário */
+  margin-top: 20%; /* Adiciona margem superior para evitar que a assinatura fique sozinha */
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .resultado, .resultado * {
+    visibility: visible;
+  }
+
+  .resultado {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  /* Garante que o cabeçalho e a assinatura não sejam cortados */
+  .cabeçalho, .signature {
+    page-break-inside: avoid;
+  }
+
+  /* Evita que as assinaturas quebrem sozinhas em uma nova página */
+  .signature {
+    page-break-before: avoid;
+  }
+
+  /* Adiciona numeração de página */
+  body {
+    counter-reset: page; /* Reseta a contagem de páginas */
+  }
+
+  .page-number {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    text-align: right;
+    font-size: 12px;
+    padding-right: 10px;
+    color: #333;
+  }
+
+  .page-number:before {
+    content: "Página " counter(page);
+  }
+}
